@@ -12,6 +12,7 @@ import WeekDays from './components/WeekDays';
 // component constants
 import AppHeader from './components/AppHeader';
 import SearchBar from './components/SearchBar';
+import SearchButton from './components/SearchButton';
 
 function App() {
 	const [input, setInput] = useState('');
@@ -56,6 +57,32 @@ function App() {
 		}
 	};
 
+	const searchButtonPress = async (event) => {
+		event.preventDefault();
+		setInput('');
+		setWeather({ ...weather, loading: true });
+		const url = 'https://api.openweathermap.org/data/2.5/weather';
+		const api_key = 'f00c38e0279b7bc85480c3fe775d518c';
+		await axios
+			.get(url, {
+				params: {
+					q: input,
+					units: 'metric',
+					appid: api_key,
+				},
+			})
+			.then((res) => {
+				console.log('res', res);
+				setWeather({ data: res.data, loading: false, error: false });
+			})
+			.catch((error) => {
+				setWeather({ ...weather, data: {}, error: true });
+				setInput('');
+				console.log('error', error);
+			});
+		
+	};
+
 	const appStyle = {
 		display: 'flex',
 		flexDirection: 'column',
@@ -86,6 +113,9 @@ function App() {
 					onChange={(event) => setInput(event.target.value)}
 					onKeyDown={enterKeySearch}
 				/>
+			</div>
+			<div>
+				<SearchButton onClick={searchButtonPress} />
 			</div>
 			{weather.loading && (
 				<>
