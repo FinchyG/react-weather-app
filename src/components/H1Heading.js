@@ -1,6 +1,6 @@
 import React from "react";
 
-function AppHeader(props) {
+function H1Heading(props) {
 
   const headerStyle = {
     fontSize: '2.3rem',
@@ -17,4 +17,4 @@ function AppHeader(props) {
   );
 }
 
-export default AppHeader;
+export default H1Heading;
